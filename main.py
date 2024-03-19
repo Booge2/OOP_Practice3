@@ -117,6 +117,21 @@ class ShoppingCart:
             total_price += item_info["price"] * item_info["quantity"]
         return total_price
 
+    def decrease_item_quantity(self, item_name: str, quantity: int):
+        """
+        Зменшує кількість одиниць товару в кошику.
+
+        Аргументи:
+            item_name: Назва товару.
+            quantity: Кількість одиниць, на яку потрібно зменшити.
+        """
+        if item_name in self.__items:
+            if quantity <= 0:
+                raise ValueError("Не можна зменшити кількість на негативне значення")
+            if self.__items[item_name]["quantity"] < quantity:
+                raise ValueError("Недостатня кількість товару")
+            self.__items[item_name]["quantity"] -= quantity
+
     def __str__(self):
         """
         Повертає рядок з інформацією про товари в кошику.
@@ -142,11 +157,18 @@ cart.add_item("Молоко", 25, 1)
 
 print(cart)
 
+cart.decrease_item_quantity("Яблуко", 1)
 cart.remove_item("Банан")
 
+try:
+    cart.decrease_item_quantity("Яблуко", 2)
+except ValueError as e:
+    print(e)
 print(cart)
 
 print(f"Загальна вартість: {cart.get_total_price()} грн.")
+
+
 # Завдання 3
 class EWallet:
     """
@@ -216,6 +238,8 @@ except ValueError as e:
     print(e)
 
 print(wallet.get_balance())
+
+
 # Завдання 4
 class Computer:
     """
